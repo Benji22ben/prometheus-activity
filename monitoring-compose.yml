@@ -44,18 +44,7 @@ services:
       - '--path.sysfs=/host/sys'
       - '--collector.filesystem.ignored-mount-points=^/(sys|proc|dev|host|etc)($$|/)'
 
-  nginx-container:
-    image: nginx:1.23
-    container_name: nginx-container
-    networks:
-      - metrics
-      - internal-website
-    volumes:
-      - ./nginx:/usr/share/nginx/html
-      - ./stub.conf:/etc/nginx/conf.d/stub.conf
-    ports:
-      - '8080:80'
 networks: 
   monitoring:
   metrics:
-  internal-website:
+    external: true
