@@ -1,0 +1,30 @@
+apiVersion: 1
+
+datasources:
+  - name: Prometheus
+    type: prometheus
+    url: http://prometheus:9090
+    access: proxy
+    isDefault: true
+    editable: true
+      
+  - name: cadvisor
+    type: prometheus
+    url: http://cadvisor:8080
+    access: proxy
+    isDefault: false
+    editable: true
+
+  - name: node-exporter
+    type: prometheus
+    url: http://node-exporter:9100
+    access: proxy
+    isDefault: false
+    editable: true
+
+  - name: nginx-exporter
+    type: prometheus
+    url: http://nginx-exporter:9113
+    access: proxy
+    isDefault: false
+    editable: true

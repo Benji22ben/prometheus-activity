@@ -1,7 +1,8 @@
 version: "3.8"
 
 volumes: 
-  prometheus: {}
+  prometheus:
+  grafana-storage:
 
 services:
   prometheus:
@@ -44,16 +45,17 @@ services:
       - '--path.sysfs=/host/sys'
       - '--collector.filesystem.ignored-mount-points=^/(sys|proc|dev|host|etc)($$|/)'
 
-    grafana:
-      image: grafana/grafana:10.2.2
-      container_name: grafana
-      networks:
-        - monitoring
-      volumes:
-        - grafana-storage:/var/lib/grafana
-      ports:
-        - '3000:3000'
-        
+  grafana:
+    image: grafana/grafana:10.2.2
+    container_name: grafana
+    networks:
+      - monitoring
+    volumes:
+      - grafana-storage:/var/lib/grafana
+      - ./grafana:/etc/grafana/provisioning/datasources
+    ports:
+      - '3000:3000'
+
 networks: 
   monitoring:
   metrics:
