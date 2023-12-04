@@ -2,18 +2,29 @@ version: "3.8"
 
 services: 
   nginx-container:
-  image: nginx:1.23
-  container_name: nginx-container
-  networks:
-    - metrics
-    - internal-website
-  volumes:
-    - ./nginx:/usr/share/nginx/html
-    - ./stub.conf:/etc/nginx/conf.d/stub.conf
-  ports:
-    - '8080:80'
+    image: nginx:1.23
+    container_name: nginx-container
+    networks:
+      - metrics
+      - internal-website
+    volumes:
+      - ./nginx/website:/usr/share/nginx/html
+      - ./nginx/stub.conf:/etc/nginx/conf.d/stub.conf
+    ports:
+      - '8080:80'
+
+  nginx-exporter:
+    image: nginx/nginx-prometheus-exporter:0.11
+    container_name: nginx-exporter
+    networks:
+      - metrics
+      - internal-website
+    command:
+      - '-nginx.scrape-uri=http://nginx-container:8080/nginx_status'
+    depends_on:
+      - nginx-container
 
 networks: 
-  metrics:
+  linux_activity_1_metrics:
     external: true
   internal-website:
